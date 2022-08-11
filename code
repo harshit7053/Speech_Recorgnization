@@ -1,1 +1,50 @@
+import speech_recognition as sr
+import pyttsx3
+import pywhatkit
+from translate import Translator
 
+listener = sr.Recognizer()
+engine = pyttsx3.init()
+Translator = Translator(from_lang="english", to_lang="hindi")
+Translation = Translator.translate("command")
+voices = engine.getProperty("voices")
+engine.setProperty("voice", voices[1].id)
+engine.say("Your, tonny, What can i do for u")
+engine.runAndWait()
+
+def talk(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def take_command():
+    try:
+        with sr.Microphone() as source:
+            print("Speak now..")
+            voice = listener.listen(source)
+            command = listener.recognize_google(voice)
+            command = command.lower()
+            if "tonny" in command:
+                command = command.replace("tonny", "")
+                # print(command)
+                # talk(command)
+            
+            elif "date" in command:
+                talk("Sorry, I have girl problem")
+            elif "are you single" in command:
+                talk("I am in relationship")
+              
+
+    except:
+        pass
+    return command
+
+def run_tonny():
+    command = take_command()
+    print(command)
+    if "play" in command:
+        song = command.replace("play", "")
+        talk("playing" + song)
+        pywhatkit.playonyt(song)
+
+
+    run_tonny()
